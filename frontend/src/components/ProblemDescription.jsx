@@ -55,12 +55,12 @@ function ProblemDescription({ problem, currentProblemId, onProblemChange, allPro
                 </div>
                 <div className="bg-base-200 rounded-lg p-4 font-mono text-sm space-y-1.5">
                   <div className="flex gap-2">
-                    <span className="text-primary font-bold min-w-[70px]">Input:</span>
-                    <span>{example.input}</span>
+                    <span className="text-base-content font-bold min-w-[70px]">Input:</span>
+                    <span className="text-base-content">{example.input}</span>
                   </div>
                   <div className="flex gap-2">
-                    <span className="text-secondary font-bold min-w-[70px]">Output:</span>
-                    <span>{example.output}</span>
+                    <span className="text-base-content font-bold min-w-[70px]">Output:</span>
+                    <span className="text-base-content">{example.output}</span>
                   </div>
                   {example.explanation && (
                     <div className="pt-2 border-t border-base-300 mt-2">
@@ -81,8 +81,8 @@ function ProblemDescription({ problem, currentProblemId, onProblemChange, allPro
           <ul className="space-y-2 text-base-content/90">
             {problem.constraints.map((constraint, idx) => (
               <li key={idx} className="flex gap-2">
-                <span className="text-primary">•</span>
-                <code className="text-sm">{constraint}</code>
+                <span className="text-base-content">•</span>
+                <code className="text-sm text-base-content">{constraint}</code>
               </li>
             ))}
           </ul>

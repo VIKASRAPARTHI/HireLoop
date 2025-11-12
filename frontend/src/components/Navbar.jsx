@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router";
-import { BookOpenIcon, LayoutDashboardIcon, SparklesIcon } from "lucide-react";
+import { BookOpenIcon, LayoutDashboardIcon } from "lucide-react";
 import { UserButton } from "@clerk/clerk-react";
 
 function Navbar() {
@@ -15,18 +15,13 @@ function Navbar() {
         {/* LOGO */}
         <Link
           to="/"
-          className="group flex items-center gap-3 hover:scale-105 transition-transform duration-200"
+          className="group hover:scale-105 transition-transform duration-200"
         >
-          <div className="size-10 rounded-xl bg-gradient-to-r from-primary via-secondary to-accent flex items-center justify-center shadow-lg ">
-            <SparklesIcon className="size-6 text-white" />
-          </div>
-
-          <div className="flex flex-col">
-            <span className="font-black text-xl bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-mono tracking-wider">
-              Talent IQ
-            </span>
-            <span className="text-xs text-base-content/60 font-medium -mt-1">Code Together</span>
-          </div>
+          <img 
+            src="/Logo.png" 
+            alt="HireLoop Logo" 
+            className="h-14 w-auto"
+          />
         </Link>
 
         <div className="flex items-center gap-1">
@@ -62,7 +57,7 @@ function Navbar() {
           >
             <div className="flex items-center gap-x-2.5">
               <LayoutDashboardIcon className="size-4" />
-              <span className="font-medium hidden sm:inline">Dashbord</span>
+              <span className="font-medium hidden sm:inline">Dashboard</span>
             </div>
           </Link>
 

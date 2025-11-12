@@ -136,7 +136,7 @@ function SessionPage() {
                           <button
                             onClick={handleEndSession}
                             disabled={endSessionMutation.isPending}
-                            className="btn btn-error btn-sm gap-2"
+                            className="btn btn-secondary btn-sm gap-2"
                           >
                             {endSessionMutation.isPending ? (
                               <Loader2Icon className="w-4 h-4 animate-spin" />
@@ -268,8 +268,8 @@ function SessionPage() {
                 <div className="h-full flex items-center justify-center">
                   <div className="card bg-base-100 shadow-xl max-w-md">
                     <div className="card-body items-center text-center">
-                      <div className="w-24 h-24 bg-error/10 rounded-full flex items-center justify-center mb-4">
-                        <PhoneOffIcon className="w-12 h-12 text-error" />
+                      <div className="w-24 h-24 bg-secondary/10 rounded-full flex items-center justify-center mb-4">
+                        <PhoneOffIcon className="w-12 h-12 text-secondary" />
                       </div>
                       <h2 className="card-title text-2xl">Connection Failed</h2>
                       <p className="text-base-content/70">Unable to connect to the video call</p>

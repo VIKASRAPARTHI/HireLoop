@@ -24,7 +24,7 @@ function VideoCallUI({ chatClient, channel }) {
       <div className="h-full flex items-center justify-center">
         <div className="text-center">
           <Loader2Icon className="w-12 h-12 mx-auto animate-spin text-primary mb-4" />
-          <p className="text-lg">Joining call...</p>
+          <p className="text-lg text-base-content">Joining call...</p>
         </div>
       </div>
     );
@@ -37,18 +37,18 @@ function VideoCallUI({ chatClient, channel }) {
         <div className="flex items-center justify-between gap-2 bg-base-100 p-3 rounded-lg shadow">
           <div className="flex items-center gap-2">
             <UsersIcon className="w-5 h-5 text-primary" />
-            <span className="font-semibold">
+            <span className="font-semibold text-base-content">
               {participantCount} {participantCount === 1 ? "participant" : "participants"}
             </span>
           </div>
           {chatClient && channel && (
             <button
               onClick={() => setIsChatOpen(!isChatOpen)}
-              className={`btn btn-sm gap-2 ${isChatOpen ? "btn-primary" : "btn-ghost"}`}
+              className={`btn btn-sm gap-2 ${isChatOpen ? "btn-primary" : "btn-ghost text-base-content hover:bg-primary/10 hover:text-primary"}`}
               title={isChatOpen ? "Hide chat" : "Show chat"}
             >
-              <MessageSquareIcon className="size-4" />
-              Chat
+              <MessageSquareIcon className="size-4 text-base-content" />
+              <span className="text-base-content">Chat</span>
             </button>
           )}
         </div>
@@ -66,17 +66,17 @@ function VideoCallUI({ chatClient, channel }) {
 
       {chatClient && channel && (
         <div
-          className={`flex flex-col rounded-lg shadow overflow-hidden bg-[#272a30] transition-all duration-300 ease-in-out ${
+          className={`flex flex-col rounded-lg shadow overflow-hidden bg-base-200 transition-all duration-300 ease-in-out ${
             isChatOpen ? "w-80 opacity-100" : "w-0 opacity-0"
           }`}
         >
           {isChatOpen && (
             <>
-              <div className="bg-[#1c1e22] p-3 border-b border-[#3a3d44] flex items-center justify-between">
-                <h3 className="font-semibold text-white">Session Chat</h3>
+              <div className="bg-base-200 p-3 border-b border-base-300 flex items-center justify-between">
+                <h3 className="font-semibold text-base-content">Session Chat</h3>
                 <button
                   onClick={() => setIsChatOpen(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-base-content/60 hover:text-primary transition-colors"
                   title="Close chat"
                 >
                   <XIcon className="size-5" />

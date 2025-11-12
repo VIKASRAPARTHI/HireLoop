@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router";
 import HomePage from "./pages/HomePage";
 
 import { Toaster } from "react-hot-toast";
+import CookieConsent from "./components/CookieConsent";
 import DashboardPage from "./pages/DashboardPage";
 import ProblemPage from "./pages/ProblemPage";
 import ProblemsPage from "./pages/ProblemsPage";
@@ -26,6 +27,7 @@ function App() {
       </Routes>
 
       <Toaster toastOptions={{ duration: 3000 }} />
+      <CookieConsent />
     </>
   );
 }

@@ -19,7 +19,7 @@ function ProblemsPage() {
       <div className="max-w-6xl mx-auto px-4 py-12">
         {/* HEADER */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Practice Problems</h1>
+          <h1 className="text-4xl font-bold mb-2 text-base-content">Practice Problems</h1>
           <p className="text-base-content/70">
             Sharpen your coding skills with these curated problems
           </p>
@@ -43,7 +43,7 @@ function ProblemsPage() {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h2 className="text-xl font-bold">{problem.title}</h2>
+                          <h2 className="text-xl font-bold text-base-content">{problem.title}</h2>
                           <span className={`badge ${getDifficultyBadgeClass(problem.difficulty)}`}>
                             {problem.difficulty}
                           </span>
@@ -55,7 +55,7 @@ function ProblemsPage() {
                   </div>
                   {/* RIGHT SIDE */}
 
-                  <div className="flex items-center gap-2 text-primary">
+                  <div className="flex items-center gap-2 text-base-content">
                     <span className="font-medium">Solve</span>
                     <ChevronRightIcon className="size-5" />
                   </div>
@@ -70,21 +70,21 @@ function ProblemsPage() {
           <div className="card-body">
             <div className="stats stats-vertical lg:stats-horizontal">
               <div className="stat">
-                <div className="stat-title">Total Problems</div>
-                <div className="stat-value text-primary">{problems.length}</div>
+                <div className="stat-title text-base-content/70">Total Problems</div>
+                <div className="stat-value text-base-content">{problems.length}</div>
               </div>
 
               <div className="stat">
-                <div className="stat-title">Easy</div>
-                <div className="stat-value text-success">{easyProblemsCount}</div>
+                <div className="stat-title text-base-content/70">Easy</div>
+                <div className="stat-value text-base-content">{easyProblemsCount}</div>
               </div>
               <div className="stat">
-                <div className="stat-title">Medium</div>
-                <div className="stat-value text-warning">{mediumProblemsCount}</div>
+                <div className="stat-title text-base-content/70">Medium</div>
+                <div className="stat-value text-base-content">{mediumProblemsCount}</div>
               </div>
               <div className="stat">
-                <div className="stat-title">Hard</div>
-                <div className="stat-value text-error">{hardProblemsCount}</div>
+                <div className="stat-title text-base-content/70">Hard</div>
+                <div className="stat-value text-base-content">{hardProblemsCount}</div>
               </div>
             </div>
           </div>
