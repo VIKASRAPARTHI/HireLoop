@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
+import Integrations from "../components/Integrations";
+import FAQ from "../components/FAQ";
+import VideoStats from "../components/VideoStats";
 import { Link } from "react-router";
 import {
   ArrowRightIcon,
   CheckIcon,
-  Check,
   UsersIcon,
   GlobeIcon,
   MessageSquare,
@@ -24,7 +26,7 @@ import {
   GraduationCap,
   ClipboardList,
   TrendingUp,
-  X,
+  
 } from "lucide-react";
 // Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -89,6 +91,7 @@ function HomePage() {
       icon: Brain,
       color: 'from-blue-500 to-indigo-600',
       bgColor: 'bg-blue-50',
+      image: '/cards/1.png',
       metric: '90% accuracy in skill evaluation',
       metricIcon: Target,
       trustElement: 'Trusted by 500+ recruiters',
@@ -106,6 +109,7 @@ function HomePage() {
       icon: CheckCircle,
       color: 'from-indigo-500 to-purple-600',
       bgColor: 'bg-indigo-50',
+      image: '/cards/2.png',
       metric: '40% faster shortlisting time',
       metricIcon: Zap,
       trustElement: 'Rated 4.8/5 by hiring teams',
@@ -123,6 +127,7 @@ function HomePage() {
       icon: BarChart3,
       color: 'from-purple-500 to-pink-600',
       bgColor: 'bg-purple-50',
+      image: '/cards/3.png',
       metric: '85% improvement in hire quality',
       metricIcon: TrendingUp,
       trustElement: 'Used by 300+ hiring teams',
@@ -140,6 +145,7 @@ function HomePage() {
       icon: UsersIcon,
       color: 'from-pink-500 to-red-600',
       bgColor: 'bg-pink-50',
+      image: '/cards/4.png',
       metric: '1000+ candidates processed daily',
       metricIcon: GraduationCap,
       trustElement: 'Used across 10+ industries',
@@ -157,6 +163,7 @@ function HomePage() {
       icon: MessageSquare,
       color: 'from-red-500 to-orange-600',
       bgColor: 'bg-red-50',
+      image: '/cards/5.png',
       metric: '60% reduction in onboarding time',
       metricIcon: ClipboardList,
       trustElement: 'Trusted by 400+ companies',
@@ -174,6 +181,7 @@ function HomePage() {
       icon: Video,
       color: 'from-orange-500 to-yellow-600',
       bgColor: 'bg-orange-50',
+      image: '/cards/6.png',
       metric: '100% fraud-free assessments',
       metricIcon: Lock,
       trustElement: 'Rated 4.9/5 for reliability',
@@ -250,7 +258,7 @@ function HomePage() {
                     </div>
 
                     <div className="flex items-center justify-center">
-                      <img src="/mockup.png" alt="mockup" className="w-[520px]" />
+                      <img src={feature.image || '/mockup.png'} alt={feature.title} className="w-[520px] rounded-xl object-cover" />
                     </div>
                   </div>
                 </div>
@@ -263,7 +271,13 @@ function HomePage() {
         <div className="lg:hidden grid gap-6 max-w-4xl mx-auto px-4 py-12">
           {stackingFeatures.map((feature, idx) => (
             <div key={idx} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4`}> {feature.icon && React.createElement(feature.icon, { className: 'w-6 h-6 text-white' })}</div>
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4`}> 
+                  {feature.image ? (
+                    <img src={feature.image} alt={feature.title} className="w-8 h-8 object-contain" />
+                  ) : (
+                    feature.icon && React.createElement(feature.icon, { className: 'w-6 h-6 text-white' })
+                  )}
+                </div>
               <div className="text-indigo-600 text-sm mb-2">{feature.tagline}</div>
               <h3 className="text-gray-900 mb-2">{feature.title}</h3>
               <p className="text-gray-600 mb-4">{feature.description}</p>
@@ -279,57 +293,7 @@ function HomePage() {
     );
   }
 
-  // Comparison table: HireLoop vs Traditional
-  function ComparisonTable() {
-    const features = [
-      { name: 'AI-Powered Screening', hireloop: true, traditional: false },
-      { name: 'Video Interviews', hireloop: true, traditional: false },
-      { name: 'Automated Assessments', hireloop: true, traditional: false },
-      { name: 'Smart Rankings', hireloop: true, traditional: false },
-      { name: 'ATS Integration', hireloop: true, traditional: true },
-      { name: 'Candidate Database', hireloop: true, traditional: true },
-      { name: 'Campus Hiring Tools', hireloop: true, traditional: false },
-      { name: 'Onboarding Automation', hireloop: true, traditional: false },
-      { name: 'Real-time Analytics', hireloop: true, traditional: false },
-      { name: 'Mobile Access', hireloop: true, traditional: false },
-    ];
-
-    return (
-      <section className="py-12 bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-gray-900 mb-2 text-xl font-semibold">HireLoop vs Traditional Methods</h2>
-            <p className="text-gray-600">See why modern recruiters choose HireLoop</p>
-          </div>
-
-          <div className="overflow-hidden rounded-2xl border border-gray-200 shadow">
-            <table className="w-full">
-              <thead className="bg-gradient-to-r from-indigo-600 to-purple-600">
-                <tr>
-                  <th className="px-6 py-4 text-left text-white">Feature</th>
-                  <th className="px-6 py-4 text-center text-white">HireLoop</th>
-                  <th className="px-6 py-4 text-center text-white">Traditional</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {features.map((f, i) => (
-                  <tr key={i} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-gray-900">{f.name}</td>
-                    <td className="px-6 py-4 text-center">
-                      {f.hireloop ? <Check className="w-5 h-5 text-green-500 mx-auto" /> : <X className="w-5 h-5 text-red-500 mx-auto" />}
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      {f.traditional ? <Check className="w-5 h-5 text-green-500 mx-auto" /> : <X className="w-5 h-5 text-red-500 mx-auto" />}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  
   
     // Small testimonial card with intersection-based entrance animation
     function TestimonialCard({ quote, name, role, rating = 5, delay = 0 }) {
@@ -385,40 +349,39 @@ function HomePage() {
         const steps = [
           {
             icon: FileText,
+            image: '/1.gif',
             title: 'Post Your Job',
             description: 'Create a job posting in minutes with AI-powered job description generator.',
-            color: 'from-blue-500 to-indigo-600',
           },
           {
             icon: Brain,
+            image: '/2.gif',
             title: 'AI Screens Candidates',
             description: 'Our AI analyzes resumes and matches candidates to your requirements.',
-            color: 'from-indigo-500 to-purple-600',
           },
           {
             icon: UsersIcon,
+            image: '/3.gif',
             title: 'Interview Top Talent',
             description: 'Conduct video interviews with built-in assessment tools.',
-            color: 'from-purple-500 to-pink-600',
           },
           {
             icon: CheckCircle,
+            image: '/4.gif',
             title: 'Hire & Onboard',
             description: 'Make offers and onboard new hires seamlessly in one platform.',
-            color: 'from-pink-500 to-red-600',
           },
         ];
 
         return (
-          <section className="py-12 -mt-8 bg-white relative overflow-hidden">
+          <section className="py-8 -mt-14 bg-white relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">How It Works</h2>
-                <p className="text-gray-600 max-w-2xl mx-auto">Four simple steps to transform your hiring process</p>
-              </div>
+              <div className="text-center mb-4">
+                <p className="text-gray-500 text-lg md:text-lg mb-3">How it works ?</p>
+                <h2 className="text-3xl md:text-4xl lg:text-3xl font-extrabold text-gray-900 max-w-2xl mx-auto md:whitespace-nowrap whitespace-normal mb-10">Just these <span className="text-blue-500">easy steps</span> to transform your hiring</h2>
+                    </div>
 
-              <div className="relative">
-                {/* dotted connector line behind cards on lg+ */}
+                    <div className="relative">
                 <div className="hidden lg:block absolute inset-x-12 top-1/2 transform -translate-y-1/2 pointer-events-none">
                   <div className="w-full border-t-4 border-dotted border-gray-800 opacity-100" />
                 </div>
@@ -426,7 +389,13 @@ function HomePage() {
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-0">
                   {steps.map((s, i) => (
                     <div key={i} className="relative z-10 rounded-2xl p-6 bg-white border shadow-sm">
-                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${s.color} flex items-center justify-center mb-4 mx-auto shadow-md`}> {s.icon && React.createElement(s.icon, { className: 'w-8 h-8 text-white' })} </div>
+                      <div className="mb-4 mx-auto flex items-center justify-center">
+                            {s.image ? (
+                              <img src={s.image} alt={s.title} className="w-20 h-20 object-contain" />
+                            ) : (
+                              s.icon && React.createElement(s.icon, { className: 'w-8 h-8 text-white' })
+                            )}
+                          </div>
                       <h3 className="text-center font-semibold mb-2 text-gray-900">{s.title}</h3>
                       <p className="text-sm text-gray-600 text-center">{s.description}</p>
                     </div>
@@ -503,7 +472,7 @@ function HomePage() {
                 </div>
               </div>
             </div>
-            <Link to="/problems" className="px-4 py-2 rounded-md text-sm hover:bg-base-200">Pricing</Link>
+            <Link to="/problems" className="px-4 py-2 rounded-md text-sm hover:bg-base-200">Plans</Link>
             <SignInButton mode="modal">
               <button className="px-4 py-2 bg-primary rounded-md text-primary-content text-sm font-semibold">Get Started</button>
             </SignInButton>
@@ -513,38 +482,111 @@ function HomePage() {
 
   {/* HERO */}
   <section className="w-full bg-sky-100">
-  <header className="max-w-7xl mx-auto px-4 py-6">
+  <header className="max-w-7xl mx-auto px-4 py-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="text-4xl lg:text-5xl font-extrabold leading-tight mb-6 hero-subtitle">Redefining the Future of Recruitment</h1>
-            <p className="text-lg text-base-content/70 mb-8 max-w-2xl">Simplify your entire hiring journey from sourcing to onboarding with one intelligent platform. Post jobs, screen candidates with AI, schedule interviews effortlessly, and make data-driven hiring decisions that help you find the perfect fit, faster.</p>
+            <p className="text-lg text-base-content/70 mb-8 max-w-2xl">Simplify your entire hiring journey from sourcing to onboarding with one intelligent platform.</p>
 
             <div className="flex flex-wrap gap-4">
               <SignInButton mode="modal">
-                <button className="px-6 py-3 bg-primary rounded-md text-primary-content font-semibold flex items-center gap-2">
+                <button className="px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-semibold flex items-center gap-2">
                   Get HireLoop
-                  <ArrowRightIcon className="w-4 h-4 text-primary-content" />
                 </button>
               </SignInButton>
 
-              <Link to="/problems" className="px-6 py-3 border border-primary rounded-md text-primary hover:bg-base-200 flex items-center gap-2">Request Demo</Link>
+              <Link to="/demovideo" className="px-6 py-5 border-primary rounded-md text-blue-500 flex items-center gap-2">
+                <img src="/play.png" alt="Play demo" className="w-4 h-2 md:w-5 md:h-5" />
+                Watch Video
+              </Link>
             </div>
 
             {/* Key features removed per user request */}
           </div>
 
-          <div className="order-first lg:order-last">
-            <img src="/Hero2.svg" alt="platform" className="m-15 rounded-3xl w-full" />
+          <div className="lg:order-last">
+            <img src="/Hero2.png" alt="platform" className="m-0 lg:m-3 rounded-3xl w-full" />
           </div>
         </div>
   </header>
   </section>
 
+  {/* COMPANIES MARQUEE (Swiper) - moved here to appear below the hero */}
+  <section className="pt-14 pb-15 min-h-[200px]">
+        <div className="w-full px-4">
+          <div className="relative">
+            <Swiper
+              modules={[Autoplay, Navigation]}
+              slidesPerView={4}
+              spaceBetween={36}
+              loop={true}
+              observer={true}
+              observeParents={true}
+              speed={700}
+              autoplay={{ delay: 2000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+              grabCursor={true}
+              onSwiper={(s) => (swiperRef.current = s)}
+              breakpoints={{
+                320: { slidesPerView: 1, spaceBetween: 20 },
+                640: { slidesPerView: 2, spaceBetween: 24 },
+                768: { slidesPerView: 3, spaceBetween: 28 },
+                1024: { slidesPerView: 4, spaceBetween: 36 },
+              }}
+              className="py-4 px-12"
+            >
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/Accenture.svg.png" alt="Accenture" className="h-9 md:h-9 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/AIRBUS_Blue.png" alt="Airbus" className="h-13 md:h-13 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/AxisBank.png" alt="Axis Bank" className="h-9 md:h-9 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/Carelon.png" alt="Carelon Global Solutions" className="h-9 md:h-9 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/deloite.png" alt="Deloitte" className="h-7 md:h-7 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/DXC.png" alt="DXC Technology" className="h-14 md:h-14 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/Goldman-Sachs.png" alt="Goldman Sachs" className="h-12 md:h-12 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/hp.png" alt="HP Inc" className="h-12 md:h-12 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/IDFC.png" alt="IDFC First Bank" className="h-10 md:h-10 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/intel.svg" alt="Intel" className="h-12 md:h-12 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/KPMG.png" alt="KPMG" className="h-10 md:h-10 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/Bosch.png" alt="Robert Bosch" className="h-10 md:h-10 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+             <img src="/companies/Virtusa.png" alt="Virtusa" className="h-8 md:h-8 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center">
+                  <img src="/companies/Walmart.png" alt="Walmart" className="h-10 md:h-10 object-contain mx-auto rounded-none" />
+              </SwiperSlide>
+            </Swiper>
+          </div>
+        </div>
+      </section>
+
   {/* How it works section inserted below the hero */}
+
   <HowItWorks />
 
   {/* STATS */}
-      <section className="relative mt-15 py-12" style={{ backgroundImage: 'url(/mock.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section className="relative mt-8 py-20" style={{ backgroundImage: 'url(/mock.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         {/* blurred overlay to improve text contrast */}
         <div className="absolute inset-0 bg-black/20 backdrop-blur-sm pointer-events-none" aria-hidden="true" />
         <div className="relative max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -566,144 +608,26 @@ function HomePage() {
           </div>
         </div>
   </section>
-
-  {/* COMPARISON: HireLoop vs Traditional - inserted per request */}
-  <ComparisonTable />
-
-  {/* TESTIMONIALS */}
-      {/* FEATURES: HireLoop feature set (replaced previous content per user request) */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
-        <div className="grid lg:grid-cols-2 gap-10 items-start">
-          <div>
-            <h2 className="text-3xl lg:text-4xl font-bold">All-in-One for Smarter Hiring</h2>
-            <p className="text-lg text-base-content/70 mt-4 max-w-xl">Everything you need to attract, assess, and onboard top talent faster and better.</p>
-              <div className="mt-2 lg:mt-0">
-                <img src="/mockup.png" alt="Product mockup" className=" w-64 md:w-100 lg:w-130 rounded-2xl" />
-              </div>
-          </div>
-        
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="p-6 border rounded-lg">
-              <h3 className="font-semibold">HireLoop Smart Assessments</h3>
-              <p className="text-sm text-base-content/70 mt-2">Evaluate candidates’ technical, analytical, and problem-solving skills with intelligent AI-based assessments.</p>
-            </div>
-
-            <div className="p-6 border rounded-lg">
-              <h3 className="font-semibold">HireLoop Skill Tests</h3>
-              <p className="text-sm text-base-content/70 mt-2">Measure cognitive, behavioral, and communication abilities to ensure the perfect culture and role fit.</p>
-            </div>
-
-            <div className="p-6 border rounded-lg">
-              <h3 className="font-semibold">HireLoop Secure Proctoring</h3>
-              <p className="text-sm text-base-content/70 mt-2">Conduct safe and reliable remote assessments with advanced monitoring to eliminate cheating and fraud.</p>
-            </div>
-
-            <div className="p-6 border rounded-lg">
-              <h3 className="font-semibold">HireLoop Campus Hiring</h3>
-              <p className="text-sm text-base-content/70 mt-2">Simplify bulk and campus recruitment with automated workflows and collaborative evaluation tools.</p>
-            </div>
-
-            <div className="p-6 border rounded-lg">
-              <h3 className="font-semibold">HireLoop Onboarding</h3>
-              <p className="text-sm text-base-content/70 mt-2">Deliver a seamless, paperless onboarding experience that welcomes new hires with efficiency and warmth.</p>
-            </div>
-
-            <div className="p-6 border rounded-lg">
-              <h3 className="font-semibold">HireLoop Video Interviews</h3>
-              <p className="text-sm text-base-content/70 mt-2">Interview and evaluate candidates anytime, anywhere — with live video interviews and real-time collaboration.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stacking features: large, screen-height stacked cards that animate on scroll */}
+      
+      <VideoStats image="/mockup.png" />
       <StackingFeatures />
 
-      <section className="max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-3xl lg:text-4xl font-bold mb-8">What customers say</h2>
+      <Integrations />
+
+     
+
+      <section className="max-w-7xl mx-auto px-4 py-4">
+        <h2 className="text-2xl lg:text-2xl font-bold mb-8">What customers say</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <TestimonialCard quote={"HireLoop helped us scale our campus hiring. The assessments are top-notch and the support was excellent."} name={"Arpita P."} role={"VP HR"} delay={80} />
           <TestimonialCard quote={"Great platform for remote interviews and proctoring. Reliable and easy to use."} name={"Freya T."} role={"SVP of Assessment"} delay={220} />
           <TestimonialCard quote={"Customisable assessments saved us time and improved hire quality."} name={"Director"} role={"E-commerce firm"} delay={360} />
         </div>
       </section>
-  {/* COMPANIES MARQUEE (Swiper) */}
-  <section className="pt-4 pb-24 min-h-[200px]" style={{ backgroundColor: '#555860' }}>
-        <div className="w-full px-4">
-          <h3 className="text-2xl font-bold mt-0 mb-13 text-center text-white">Those who trust us</h3>
 
-          <div className="relative">
-            {/* Navigation buttons */}
-            <button aria-label="Previous" onClick={() => swiperRef.current?.slidePrev()} className="absolute left-2 top-1/2 -translate-y-1/2 z-50 rounded-full p-2 bg-white/10 hover:bg-white/20 text-white">
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button aria-label="Next" onClick={() => swiperRef.current?.slideNext()} className="absolute right-2 top-1/2 -translate-y-1/2 z-50 rounded-full p-2 bg-white/10 hover:bg-white/20 text-white">
-              <ChevronRight className="w-5 h-5" />
-            </button>
 
-            <Swiper
-              modules={[Autoplay, Navigation]}
-              slidesPerView={4}
-              spaceBetween={36}
-              loop={true}
-              observer={true}
-              observeParents={true}
-              speed={700}
-              autoplay={{ delay: 2000, disableOnInteraction: false, pauseOnMouseEnter: true }}
-              grabCursor={true}
-              onSwiper={(s) => (swiperRef.current = s)}
-              breakpoints={{
-                320: { slidesPerView: 1, spaceBetween: 20 },
-                640: { slidesPerView: 2, spaceBetween: 24 },
-                768: { slidesPerView: 3, spaceBetween: 28 },
-                1024: { slidesPerView: 4, spaceBetween: 36 },
-              }}
-              className="py-4 px-12"
-            >
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/Airbus.png" alt="Airbus" className="h-5 md:h-7 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/Axis-Bank.png" alt="Axis Bank" className="h-6 md:h-9 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/Carelon-Global-Solutions-.png" alt="Carelon Global Solutions" className="h-7 md:h-11 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/Deloitte.png" alt="Deloitte" className="h-4 md:h-7 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/DXC-Technology.png" alt="DXC Technology" className="h-8 md:h-12 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/Goldman-Sachs.png" alt="Goldman Sachs" className="h-8 md:h-12 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/HP-INC.png" alt="HP Inc" className="h-8 md:h-12 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/IDFC-First-Bank.png" alt="IDFC First Bank" className="h-6 md:h-10 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/Intel.png" alt="Intel" className="h-8 md:h-10 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/KPMG.png" alt="KPMG" className="h-8 md:h-10 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/Robert-Bosch.png" alt="Robert Bosch" className="h-6 md:h-10 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-             <img src="/companies/Virtusa.png" alt="Virtusa" className="h-6 md:h-8 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-              <SwiperSlide className="flex items-center justify-center">
-                  <img src="/companies/Walmart.png" alt="Walmart" className="h-8 md:h-10 object-contain mx-auto rounded-none" />
-              </SwiperSlide>
-            </Swiper>
-          </div>
-        </div>
-      </section>
+        {/* FAQ section inserted above footer */}
+        <FAQ />
 
   {/* FOOTER */}
   <footer className="bg-sky-50 border-t border-base-200 pt-12 pb-8">

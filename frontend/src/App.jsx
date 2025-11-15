@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 
 import { Toaster } from "react-hot-toast";
 import CookieConsent from "./components/CookieConsent";
+import LiveChat from "./components/LiveChat";
 import DashboardPage from "./pages/DashboardPage";
 import ProblemPage from "./pages/ProblemPage";
 import ProblemsPage from "./pages/ProblemsPage";
@@ -28,6 +29,7 @@ function App() {
 
       <Toaster toastOptions={{ duration: 3000 }} />
       <CookieConsent />
+      <LiveChat />
     </>
   );
 }
