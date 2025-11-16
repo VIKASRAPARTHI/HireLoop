@@ -10,13 +10,73 @@ export default function LiveChat() {
   const scrollRef = useRef(null);
   const [chatImgAvailable, setChatImgAvailable] = useState(true);
 
-  // Custom palette provided by user
+  // Custom palette provided by user (now using warm orange shades)
   const palette = {
-    federal_blue: { DEFAULT: '#03045e', 100: '#010113', 200: '#010226', 300: '#020338', 400: '#02044b', 500: '#03045e', 600: '#0508ae', 700: '#0f12f8', 800: '#5f61fa', 900: '#afb0fd' },
-    honolulu_blue: { DEFAULT: '#0077b6', 100: '#001825', 200: '#003049', 300: '#00486e', 400: '#005f93', 500: '#0077b6', 600: '#00a2f9', 700: '#3bbaff', 800: '#7cd1ff', 900: '#bee8ff' },
-    pacific_cyan: { DEFAULT: '#00b4d8', 100: '#00242b', 200: '#004756', 300: '#006b81', 400: '#008fab', 500: '#00b4d8', 600: '#12d8ff', 700: '#4ee1ff', 800: '#89ebff', 900: '#c4f5ff' },
-    non_photo_blue: { DEFAULT: '#90e0ef', 100: '#0a3a43', 200: '#137586', 300: '#1dafc9', 400: '#4ccfe6', 500: '#90e0ef', 600: '#a6e7f2', 700: '#bcedf5', 800: '#d2f3f9', 900: '#e9f9fc' },
-    light_cyan: { DEFAULT: '#caf0f8', 100: '#0a444f', 200: '#15889f', 300: '#2ac4e3', 400: '#79daee', 500: '#caf0f8', 600: '#d4f3f9', 700: '#dff6fb', 800: '#e9f9fc', 900: '#f4fcfe' }
+    // used as primary text / accent (dark warm)
+    federal_blue: {
+      DEFAULT: '#7A2B00',
+      '100': '#fff7f2',
+      '200': '#ffe9dd',
+      '300': '#ffd0b8',
+      '400': '#ffb287',
+      '500': '#ff944f',
+      '600': '#ff7a1a',
+      '700': '#e56300',
+      '800': '#b34a00',
+      '900': '#7a2b00'
+    },
+    // main CTA / toggle button (bright orange)
+    honolulu_blue: {
+      DEFAULT: '#ff6a00',
+      '100': '#fff5ef',
+      '200': '#ffe6d9',
+      '300': '#ffd0b2',
+      '400': '#ffb07a',
+      '500': '#ff944f',
+      '600': '#ff7a1a',
+      '700': '#e65a00',
+      '800': '#b34700',
+      '900': '#7a2b00'
+    },
+    // send button / accent (softer orange)
+    pacific_cyan: {
+      DEFAULT: '#ff9a3c',
+      '100': '#fff6ee',
+      '200': '#ffe9d4',
+      '300': '#ffd8b3',
+      '400': '#ffc08a',
+      '500': '#ffac5f',
+      '600': '#ff982e',
+      '700': '#e67f00',
+      '800': '#b36300',
+      '900': '#7f3f00'
+    },
+    // bot bubble background (pale peach)
+    non_photo_blue: {
+      DEFAULT: '#ffd9b3',
+      '100': '#fff9f4',
+      '200': '#fff0e6',
+      '300': '#ffe1c9',
+      '400': '#ffd0aa',
+      '500': '#ffc294',
+      '600': '#ffb47a',
+      '700': '#e69a56',
+      '800': '#b3763f',
+      '900': '#7f4726'
+    },
+    // header / subtle background (very pale peach)
+    light_cyan: {
+      DEFAULT: '#fff3ea',
+      '100': '#ffffff',
+      '200': '#fffaf6',
+      '300': '#fff4ef',
+      '400': '#fff0e6',
+      '500': '#fff0e0',
+      '600': '#ffe6d6',
+      '700': '#ffd8c6',
+      '800': '#ffcab0',
+      '900': '#f0b997'
+    }
   };
 
   useEffect(() => {
@@ -120,7 +180,7 @@ export default function LiveChat() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type your message..."
-              className="flex-1 resize-none px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-sky-300 bg-white text-gray-900 placeholder-gray-500"
+              className="flex-1 resize-none px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-orange-300 bg-white placeholder-gray-500"
               rows={1}
             />
 

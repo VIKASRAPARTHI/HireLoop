@@ -55,50 +55,15 @@ export default function Integrations() {
 
   return (
     <section className="py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="max-w-7xl mx-auto px-1 sm:px-4 lg:px-1 text-center">
         <div
           ref={containerRef}
           className={`relative mb-8 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
         >
-          <h2 className="text-4xl md:text-4xl font-extrabold text-gray-900 mb-4">Connect with the Apps<br className="hidden md:block"/> you Use Daily</h2>
+          <h2 className="text-4xl md:text-4xl font-extrabold text-gray-900 mb-12"><span className='text-orange-400'>Connect</span> with the Apps<br className="hidden md:block"/> you Use Daily</h2>
         </div>
 
-        <div className="relative w-full">
-          {/* full-bleed soft gradient that visually starts under the Integrations heading */}
-          <div className="absolute left-0 right-0" aria-hidden>
-            {/* full-bleed gradient that aligns with the grid overlay; edges dissolve */}
-            <div style={{
-              position: 'absolute',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '100vw',
-              height: 460,
-              // increase top margin so the background sits lower under the heading
-              marginTop: -44,
-              background: 'linear-gradient(135deg, rgba(150,200,255,1) 0%, rgba(255,230,180,1) 100%)',
-              boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.6)',
-              // fade top and bottom so the gradient dissolves vertically
-              WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, rgba(0,0,0,0) 100%)',
-              maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, rgba(0,0,0,0) 100%)'
-            }} />
-
-            {/* grid overlay full-bleed, matches gradient area and dissolves at edges */}
-            <div className="absolute inset-0 pointer-events-none" style={{ top: 0, height: 460 }}>
-              <div style={{
-                  height: '100%',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: '100vw',
-                  backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><g stroke='%23000' stroke-opacity='0.06' stroke-width='1'><path d='M120 0 L0 0' /><path d='M0 0 L0 120' /></g></svg>")`,
-                  backgroundRepeat: 'repeat',
-                  backgroundSize: '120px 120px',
-                  opacity: 0.92,
-                  // fade the grid at top and bottom only (preserve horizontal continuity)
-                  WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, rgba(0,0,0,0) 100%)',
-                  maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, rgba(0,0,0,0) 100%)'
-                }} />
-            </div>
-          </div>
+        
 
           <div className="relative max-w-7xl mx-auto" style={{ height: 420 }}>
             {/* absolute positioned tiles using percentage coords for organic layout; sizes vary */}
@@ -132,11 +97,10 @@ export default function Integrations() {
             })}
 
             <div className="absolute left-1/2 transform -translate-x-1/2 w-full flex justify-center mt-4" style={{ bottom: -5 }}>
-              <button className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow">View All Integration</button>
+              <button className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-full shadow">View All Integration</button>
             </div>
           </div>
         </div>
-      </div>
     </section>
   );
 }

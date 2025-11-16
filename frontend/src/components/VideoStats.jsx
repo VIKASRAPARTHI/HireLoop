@@ -47,22 +47,22 @@ export default function VideoStats({ image = '/mockup.png' }) {
     <section className="max-w-7xl mx-auto px-4 py-6">
       <div className="max-w-5xl mx-auto text-center py-6">
         <div className="inline-block bg-white/90 text-xs px-3 py-1 rounded-full mb-4 shadow-sm">CONDUCT SMART, STRUCTURED VIDEO INTERVIEWS WITH EASE</div>
-        <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-0">Don’t let great talent slip away due to scheduling delays or fragmented tools</h2>
+        <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-0"><span className="text-orange-500">Don’t let</span> great talent slip away due to scheduling delays or <span className="text-orange-500">fragmented tools</span></h2>
       </div>
 
       <div
         ref={containerRef}
         className="relative rounded-3xl p-6 mx-auto"
-        style={{
-          // container constrained to match video size and centered
-          maxWidth: 640,
-          width: '100%',
-          background: 'linear-gradient(90deg, rgba(255,244,236,0.9), rgba(224,236,255,0.9))',
-          border: '2px solid rgba(0,0,0,0.06)',
-        }}
+        // style={{
+        //   // increased container width so video can stretch more horizontally
+        //   maxWidth: 1000,
+        //   width: '100%',
+        //   background: 'linear-gradient(90deg, rgba(255,244,236,0.9), rgba(224,236,255,0.9))',
+        //   border: '2px solid rgba(0,0,0,0.06)',
+        // }}
       >
         <div className="text-center">
-          <div className="relative rounded-xl overflow-hidden mx-auto" style={{ maxWidth: 580 }}>
+          <div className="relative rounded-xl overflow-hidden mx-auto" style={{ maxWidth: 860 }}>
             <video
               ref={videoRef}
               src="/mockvideo.mp4"
@@ -71,14 +71,14 @@ export default function VideoStats({ image = '/mockup.png' }) {
               muted
               loop
               preload="metadata"
-              style={{ maxHeight: 420 }}
+              style={{ maxHeight: 560 }}
             />
           </div>
         </div>
       </div>
 
       <div className="mt-4 flex items-center justify-center gap-4">
-        <button className="px-6 py-3 bg-blue-600 text-white rounded-full shadow">Try HireLoop Today</button>
+        <button className="px-6 py-3 bg-orange-600 text-white rounded-full shadow">Try HireLoop Today</button>
         <button className="px-6 py-3 border rounded-full">More info</button>
       </div>
     </section>

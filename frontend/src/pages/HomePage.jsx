@@ -377,8 +377,8 @@ function HomePage() {
           <section className="py-8 -mt-14 bg-white relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-4">
-                <p className="text-gray-500 text-lg md:text-lg mb-3">How it works ?</p>
-                <h2 className="text-3xl md:text-4xl lg:text-3xl font-extrabold text-gray-900 max-w-2xl mx-auto md:whitespace-nowrap whitespace-normal mb-10">Just these <span className="text-blue-500">easy steps</span> to transform your hiring</h2>
+                <p className="text-gray-900 text-lg md:text-lg mb-3">How it works ?</p>
+                <h2 className="text-3xl md:text-4xl lg:text-3xl font-extrabold text-gray-900 max-w-2xl mx-auto md:whitespace-nowrap whitespace-normal mb-10">Just these <span className="text-orange-500">easy steps</span> to transform your hiring</h2>
                     </div>
 
                     <div className="relative">
@@ -422,19 +422,31 @@ function HomePage() {
         /* Testimonials animation */
         .testimonial-card { transform: translateY(18px); opacity: 0; }
         .testimonial-card.in-view { transform: none; opacity: 1; }
-        .testimonial-card .text-base-content\\/80 { color: rgba(17,24,39,0.85); }
+          .testimonial-card .text-base-content\/80 { color: rgba(17,24,39,0.85); }
+          /* Navbar CTA HSLA background (uses !important to override tailwind utilities) */
+          .homepage-page .nav-cta-hsla { background-color: hsla(0, 0%, 100%, .1) !important; }
       `}</style>
   {/* NAVBAR */}
   <div className="homepage-page">
-  <nav className={`transition-all duration-500 ease-out sticky top-0 z-50 ${navSolid ? 'bg-white shadow-sm' : 'bg-sky-100'}`}>
-        <div className="max-w-7xl mx-auto p-4 flex items-center justify-between">
+  <nav
+    className={`sticky top-0 z-50 w-full bg-gradient-to-r from-[#003b66] to-[#062e60] transition-all duration-300 ease-out ${navSolid ? 'shadow-sm' : ''}`}
+  >
+        {/* overlay that fades in to become the solid navbar on scroll */}
+        <div aria-hidden className={`absolute inset-0 bg-white pointer-events-none transition-opacity duration-300 ${navSolid ? 'opacity-100' : 'opacity-0'}`} />
+        <div className="max-w-7xl mx-auto p-4 flex items-center justify-between relative">
           <Link to={'/'} className="flex items-center gap-3">
-            <img src="/Logo.png" alt="HireLoop" className="h-14 w-auto" />
+            <img src={navSolid ? '/Logo.png' : '/Logoo.png'} alt="HireLoop" className={'h-11 w-auto transition-opacity duration-300'} />
 
           </Link>
           <div className="flex items-center gap-3">
             <div className="relative" onMouseEnter={() => setProductsOpen(true)} onMouseLeave={() => setProductsOpen(false)} onFocus={() => setProductsOpen(true)} onBlur={() => setProductsOpen(false)}>
-              <button aria-haspopup="true" aria-expanded={productsOpen} className="px-4 py-2 rounded-md text-sm hover:bg-base-200">Products ▾</button>
+              <button
+                aria-haspopup="true"
+                aria-expanded={productsOpen}
+                className={`px-4 py-2 text-sm font-semibold transition-colors duration-300 ${navSolid ? 'text-black' : 'text-white'}`}
+              >
+                Products ▾
+              </button>
               <div className={`absolute right-0 top-full mt-1 w-80 bg-base-100 rounded-lg shadow-lg p-4 z-50 transition-opacity duration-150 ${productsOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}>
                 <div className="grid grid-cols-1 gap-6">
                   <div className="p-2 rounded-md">
@@ -472,30 +484,32 @@ function HomePage() {
                 </div>
               </div>
             </div>
-            <Link to="/problems" className="px-4 py-2 rounded-md text-sm hover:bg-base-200">Plans</Link>
+            <Link to="/problems" className={`px-4 py-2 text-sm font-semibold transition-colors duration-300 ${navSolid ? 'text-black' : 'text-white'}`}>Plans</Link>
             <SignInButton mode="modal">
-              <button className="px-4 py-2 bg-primary rounded-md text-primary-content text-sm font-semibold">Get Started</button>
+              <button className={`px-4 py-2 text-sm font-semibold rounded-3xl transition-all duration-300 ${navSolid ? 'bg-black text-white shadow-sm' : 'nav-cta-hsla text-white'}`}>
+                Get Started
+              </button>
             </SignInButton>
           </div>
         </div>
       </nav>
 
   {/* HERO */}
-  <section className="w-full bg-sky-100">
+  <section className="w-full" style={{ background: 'linear-gradient(to right, rgb(0, 59, 102), rgb(6, 46, 96))' }}>
   <header className="max-w-7xl mx-auto px-4 py-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h1 className="text-4xl lg:text-5xl font-extrabold leading-tight mb-6 hero-subtitle">Redefining the Future of Recruitment</h1>
-            <p className="text-lg text-base-content/70 mb-8 max-w-2xl">Simplify your entire hiring journey from sourcing to onboarding with one intelligent platform.</p>
+            <h1 className="text-4xl lg:text-5xl font-extrabold leading-tight mb-6 hero-subtitle text-white">Redefining the Future of <span className="text-white">Recruitment</span></h1>
+            <p className="text-lg mb-8 max-w-2xl text-white">Simplify your entire hiring journey from sourcing to onboarding with one intelligent platform.</p>
 
             <div className="flex flex-wrap gap-4">
               <SignInButton mode="modal">
-                <button className="px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-semibold flex items-center gap-2">
+                <button className="px-5 py-4 bg-orange-600 hover:bg-orange-700 rounded-4xl text-white font-bold flex items-center gap-2">
                   Get HireLoop
                 </button>
               </SignInButton>
 
-              <Link to="/demovideo" className="px-6 py-5 border-primary rounded-md text-blue-500 flex items-center gap-2">
+              <Link to="/demovideo" className="px-6 py-5 border-primary rounded-md text-white flex items-center gap-2 font-bold">
                 <img src="/play.png" alt="Play demo" className="w-4 h-2 md:w-5 md:h-5" />
                 Watch Video
               </Link>
@@ -515,6 +529,7 @@ function HomePage() {
   <section className="pt-14 pb-15 min-h-[200px]">
         <div className="w-full px-4">
           <div className="relative">
+          
             <Swiper
               modules={[Autoplay, Navigation]}
               slidesPerView={4}
@@ -522,7 +537,7 @@ function HomePage() {
               loop={true}
               observer={true}
               observeParents={true}
-              speed={700}
+              speed={600}
               autoplay={{ delay: 2000, disableOnInteraction: false, pauseOnMouseEnter: true }}
               grabCursor={true}
               onSwiper={(s) => (swiperRef.current = s)}
@@ -532,7 +547,7 @@ function HomePage() {
                 768: { slidesPerView: 3, spaceBetween: 28 },
                 1024: { slidesPerView: 4, spaceBetween: 36 },
               }}
-              className="py-4 px-12"
+              className="py-4 px-12" 
             >
               <SwiperSlide className="flex items-center justify-center">
              <img src="/companies/Accenture.svg.png" alt="Accenture" className="h-9 md:h-9 object-contain mx-auto rounded-none" />
@@ -611,13 +626,9 @@ function HomePage() {
       
       <VideoStats image="/mockup.png" />
       <StackingFeatures />
-
-      <Integrations />
-
-     
-
+      
       <section className="max-w-7xl mx-auto px-4 py-4">
-        <h2 className="text-2xl lg:text-2xl font-bold mb-8">What customers say</h2>
+        <h2 className="text-2xl lg:text-3xl font-bold mb-8">What customers say</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <TestimonialCard quote={"HireLoop helped us scale our campus hiring. The assessments are top-notch and the support was excellent."} name={"Arpita P."} role={"VP HR"} delay={80} />
           <TestimonialCard quote={"Great platform for remote interviews and proctoring. Reliable and easy to use."} name={"Freya T."} role={"SVP of Assessment"} delay={220} />
@@ -625,12 +636,69 @@ function HomePage() {
         </div>
       </section>
 
+      <Integrations />
 
         {/* FAQ section inserted above footer */}
         <FAQ />
 
+      {/* CTA: silky wave background + floating bubbles, overlaps footer */}
+      <section aria-labelledby="cta-heading" className="relative -mb-24">
+        {/* Full-bleed silky background */}
+        <div aria-hidden className="absolute inset-x-0 top-0 -z-10">
+          <div style={{
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '100vw',
+            height: 420,
+            position: 'absolute',
+            background: 'radial-gradient(1200px 400px at 10% 20%, rgba(255,255,255,0.03), transparent), radial-gradient(800px 300px at 90% 80%, rgba(255,255,255,0.02), transparent), linear-gradient(180deg, #0f1724 0%, #273043 60%, #1c2630 100%)',
+            filter: 'blur(8px) contrast(1.05)',
+            boxShadow: 'inset 0 2px 40px rgba(0,0,0,0.6)'
+          }} />
+          {/* subtle grain overlay */}
+          <div style={{
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '100vw',
+            height: 420,
+            position: 'absolute',
+            backgroundImage: `radial-gradient(rgba(255,255,255,0.01) 1px, transparent 1px)`,
+            backgroundSize: '12px 12px',
+            mixBlendMode: 'overlay',
+            opacity: 0.6
+          }} />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="mx-auto" style={{ maxWidth: 1100 }}>
+            <div className="relative">
+              {/* CTA card */}
+              <div className="bg-gradient-to-r from-[#0b1220] to-[#232a34] rounded-3xl shadow-2xl p-8 md:p-12 text-center text-white relative" style={{ marginBottom: '-110px', zIndex: 20 }}>
+                <h2 id="cta-heading" className="text-3xl md:text-4xl font-extrabold">Ready to Transform Your Hiring Process?</h2>
+                <p className="text-sm md:text-base text-gray-200 mt-3 max-w-2xl mx-auto">Start screening, interviewing, and onboarding smarter — all in one place</p>
+                <div className="mt-6 flex items-center justify-center gap-4">
+                  <SignInButton mode="modal">
+                    <button className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-full font-semibold">Get HireLoop</button>
+                  </SignInButton>
+                  {/* <button className="px-6 py-3 bg-white text-gray-800 rounded-full font-medium">Invite a Friend</button> */}
+                </div>
+              </div>
+
+              {/* floating decorative bubbles (absolute) - moved after CTA to ensure they render on top */}
+              <div aria-hidden style={{ position: 'absolute', inset: 0, zIndex: 60, pointerEvents: 'none' }}>
+                <div style={{ position: 'absolute', left: -40, top: 20, width: 110, height: 110, borderRadius: 9999, background: 'radial-gradient(circle at 30% 25%, rgba(255,255,255,0.08), rgba(0,0,0,0.25))', boxShadow: '0 18px 40px rgba(2,6,23,0.6)' }} />
+                <div style={{ position: 'absolute', right: -40, top: -10, width: 140, height: 140, borderRadius: 9999, background: 'radial-gradient(circle at 35% 30%, rgba(255,255,255,0.05), rgba(0,0,0,0.4))', boxShadow: '0 30px 60px rgba(2,6,23,0.6)' }} />
+                <div style={{ position: 'absolute', left: 80, bottom: -40, width: 160, height: 160, borderRadius: 9999, background: 'radial-gradient(circle at 35% 30%, rgba(40,170,255,0.95), rgba(10,50,80,0.6))', boxShadow: '0 30px 60px rgba(2,6,23,0.6)' }} />
+                <div style={{ position: 'absolute', right: 120, bottom: -20, width: 90, height: 90, borderRadius: 9999, background: 'radial-gradient(circle at 30% 25%, rgba(255,255,255,0.06), rgba(0,0,0,0.3))', boxShadow: '0 12px 30px rgba(2,6,23,0.6)' }} />
+                <div style={{ position: 'absolute', left: '50%', top: -30, transform: 'translateX(-50%)', width: 36, height: 36, borderRadius: 9999, background: 'radial-gradient(circle at 35% 35%, rgba(40,170,255,0.95), rgba(10,50,80,0.6))', boxShadow: '0 6px 14px rgba(2,6,23,0.6)' }} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
   {/* FOOTER */}
-  <footer className="bg-sky-50 border-t border-base-200 pt-12 pb-8">
+  <footer className="bg-sky-100 border-t border-base-200 pt-40 pb-12">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div>
@@ -660,8 +728,8 @@ function HomePage() {
 
           {/* HR Features */}
           <div>
-            <h4 className="font-semibold mb-3">HireLoop Features</h4>
-            <ul className="space-y-2 text-sm text-black/80">
+            <h4 className="font-semibold mb-3 ml-5">Services</h4>
+            <ul className="space-y-2 text-sm text-black/80 ml-5">
               <li><Link to="/features/core-hr" className="hover:text-primary">Smart Job Posting</Link></li>
               <li><Link to="/features/payroll" className="hover:text-primary">AI Resume Screening</Link></li>
               <li><Link to="/features/leave" className="hover:text-primary">Applicant Tracking System (ATS)</Link></li>
@@ -684,7 +752,7 @@ function HomePage() {
               <h4 className="font-semibold mb-2">Subscribe to Newsletter</h4>
               <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
                 <input aria-label="email" type="email" placeholder="Enter your organization email address" className="w-full px-3 py-2 border rounded-md bg-base-100 text-sm" />
-                <button className="px-4 py-2 bg-primary text-primary-content rounded-md text-sm font-semibold">Subscribe</button>
+                <button className="px-4 py-2 bg-orange-600 text-primary-content rounded-md text-sm font-semibold">Subscribe</button>
               </form>
             </div>
 

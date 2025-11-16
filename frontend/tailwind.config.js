@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'hireloop-gradient': "linear-gradient(to right, rgb(0, 59, 102), rgb(6, 46, 96))",
+      },
+    },
   },
   plugins: [
     require('daisyui'),
@@ -14,20 +18,8 @@ export default {
     themes: [
       {
         hireloop: {
-          // Primary: shades of black (used for strong CTAs / dark backgrounds)
-          "primary": "#0B1220",           // almost-black primary
-          "primary-focus": "#0f1724",     // slightly lighter for focus/hover
-          "primary-content": "#FFFFFF",    // text on primary
-
-          // Secondary: shades of blue (brand accent)
-          "secondary": "#1E40AF",         // indigo-800 / deeper blue
-          "secondary-focus": "#1E3A8A",   // darker on focus
-          "secondary-content": "#FFFFFF",
-
-          // Tertiary: light blue (subtle gradient stop / highlights)
-          "tertiary": "#60A5FA",          // light blue
-          "tertiary-content": "#000000",
-
+          "primary": "#3B82F6",      // Vibrant Blue (from logo - Loop color)
+          "secondary": "#60A5FA",    // Lighter Blue (from logo - Hire color)
           "base-100": "#FFFFFF",     // White background
           "base-200": "#F9FAFB",     // Light Gray background
           "base-300": "#F3F4F6",     // Lighter Gray background
