@@ -63,7 +63,7 @@ export default function FAQ() {
     <section className="relative bg-white" aria-labelledby="faq-heading">
       <div ref={ref} className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
         <div className={`text-center mb-8 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <h2 id="faq-heading" className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 -mt-16">Enterprise Integration Frequently Asked <span className='text-orange-400'>Questions</span></h2>
+          <h2 id="faq-heading" className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 -mt-12">Enterprise Integration Frequently Asked <span className='text-orange-400'>Questions</span></h2>
           <p className="text-gray-600 text-lg">Got questions? We've got answers</p>
         </div>
 

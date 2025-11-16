@@ -35,6 +35,145 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { SignInButton } from "@clerk/clerk-react";
 
+// Small testimonial card with intersection-based entrance animation
+function TestimonialCard({ quote, name, role, rating = 5, delay = 0, forceActive = false }) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    if (forceActive) {
+      setInView(true);
+      return;
+    }
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry && entry.isIntersecting) {
+        setInView(true);
+        obs.disconnect();
+      }
+    }, { threshold: 0.2 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  const initials = (name || '')
+    .split(' ')
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join('');
+
+  return (
+    <blockquote
+      ref={ref}
+      className={`testimonial-card p-6 rounded-2xl bg-white shadow-md transform transition-all duration-700 ${inView ? 'in-view' : 'opacity-0 translate-y-6'}`}
+      style={{ transitionDelay: `${delay}ms` }}
+      aria-label={`Testimonial from ${name}`}
+    >
+      <div className="flex items-start gap-4">
+        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">{initials}</div>
+        <div className="flex-1">
+          <div className="text-base-content/80 mb-3 italic">“{quote}”</div>
+          <div className="flex items-center gap-1 mt-2" aria-hidden>
+            {Array.from({ length: rating }).map((_, i) => (
+              <StarIcon key={i} className="w-4 h-4 text-yellow-400" />
+            ))}
+          </div>
+
+          <div className="mt-4">
+            <div className="font-semibold">{name}</div>
+            <div className="text-xs text-base-content/60">{role}</div>
+          </div>
+        </div>
+      </div>
+    </blockquote>
+  );
+}
+
+// Simple carousel driver that cycles testimonials without showing a scrollbar
+function TestimonialsCarousel({ items = [] }) {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const timeoutRef = useRef(null);
+
+  useEffect(() => {
+    const count = (items && items.length) || 0;
+    if (count <= 1) return undefined;
+    // clear any existing timer
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    if (!paused) {
+      timeoutRef.current = setTimeout(() => {
+        setActive((s) => (s + 1) % count);
+      }, 3800);
+    }
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, [items.length, paused, active]);
+
+  const goPrev = () => setActive((s) => (s - 1 + items.length) % items.length);
+  const goNext = () => setActive((s) => (s + 1) % items.length);
+
+  const prevIdx = (active - 1 + items.length) % items.length;
+  const nextIdx = (active + 1) % items.length;
+
+  return (
+    <div style={{ width: '100%' }}>
+      <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+        <div style={{ display: 'flex', gap: 24, justifyContent: 'center', alignItems: 'stretch' }}>
+          {items.map((it, idx) => {
+            const cls = idx === active ? 'testimonial-item center' : idx === prevIdx || idx === nextIdx ? 'testimonial-item side' : 'testimonial-item side';
+            return (
+              <div key={idx} className={cls} role="listitem" aria-hidden={idx !== active}>
+                <TestimonialCard
+                  quote={it.quote}
+                  name={it.name}
+                  role={it.role}
+                  delay={0}
+                  forceActive={idx === active}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="testimonials-controls">
+        <button type="button" aria-label="Previous testimonial" className="testimonials-control-btn" onClick={goPrev}>
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <div className="testimonials-dots" aria-hidden>
+          {items.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Show testimonial ${i + 1}`}
+              className={`testimonials-dot ${i === active ? 'active' : ''}`}
+              onClick={() => setActive(i)}
+            />
+          ))}
+        </div>
+        <button type="button" aria-label="Next testimonial" className="testimonials-control-btn" onClick={goNext}>
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// Stable testimonials data so the array reference doesn't change on every render
+const TESTIMONIALS = [
+  { quote: "HireLoop helped us scale our campus hiring. The assessments are top-notch and the support was excellent.", name: "Arpita P.", role: "VP HR" },
+  { quote: "Great platform for remote interviews and proctoring. Reliable and easy to use.", name: "Freya T.", role: "SVP of Assessment" },
+  { quote: "Customisable assessments saved us time and improved hire quality.", name: "Director", role: "E-commerce firm" },
+  { quote: "The onboarding automation saved us weeks of manual work — superb product and support.", name: "Sanjay R.", role: "Head of Talent" },
+  { quote: "We reduced time-to-hire significantly using HireLoop's smart rankings and assessments.", name: "Leena M.", role: "Recruitment Lead" },
+];
+
 function HomePage() {
   const [productsOpen, setProductsOpen] = useState(false);
   const swiperRef = useRef(null);
@@ -295,54 +434,7 @@ function HomePage() {
 
   
   
-    // Small testimonial card with intersection-based entrance animation
-    function TestimonialCard({ quote, name, role, rating = 5, delay = 0 }) {
-      const ref = useRef(null);
-      const [inView, setInView] = useState(false);
-
-      useEffect(() => {
-        const obs = new IntersectionObserver(([entry]) => {
-          if (entry && entry.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        }, { threshold: 0.2 });
-        if (ref.current) obs.observe(ref.current);
-        return () => obs.disconnect();
-      }, []);
-
-      const initials = (name || '')
-        .split(' ')
-        .map((n) => n[0])
-        .slice(0, 2)
-        .join('');
-
-      return (
-        <blockquote
-          ref={ref}
-          className={`testimonial-card p-6 rounded-2xl bg-white shadow-md transform transition-all duration-700 ${inView ? 'in-view' : 'opacity-0 translate-y-6'}`}
-          style={{ transitionDelay: `${delay}ms` }}
-          aria-label={`Testimonial from ${name}`}
-        >
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">{initials}</div>
-            <div className="flex-1">
-              <div className="text-base-content/80 mb-3 italic">“{quote}”</div>
-              <div className="flex items-center gap-1 mt-2" aria-hidden>
-                {Array.from({ length: rating }).map((_, i) => (
-                  <StarIcon key={i} className="w-4 h-4 text-yellow-400" />
-                ))}
-              </div>
-
-              <div className="mt-4">
-                <div className="font-semibold">{name}</div>
-                <div className="text-xs text-base-content/60">{role}</div>
-              </div>
-            </div>
-          </div>
-        </blockquote>
-      );
-     }
+    
 
       // HowItWorks — static presentation (animations removed)
       function HowItWorks() {
@@ -377,7 +469,7 @@ function HomePage() {
           <section className="py-8 -mt-14 bg-white relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-4">
-                <p className="text-gray-900 text-lg md:text-lg mb-3">How it works ?</p>
+                <p className="text-gray-900 text-lg md:text-lg mb-3">Why Choose Us ?</p>
                 <h2 className="text-3xl md:text-4xl lg:text-3xl font-extrabold text-gray-900 max-w-2xl mx-auto md:whitespace-nowrap whitespace-normal mb-10">Just these <span className="text-orange-500">easy steps</span> to transform your hiring</h2>
                     </div>
 
@@ -407,6 +499,30 @@ function HomePage() {
         );
       }
 
+  // Blog card used in the Blogs section — supports `large` (featured) and `tall` (side cards) variants
+  function BlogCard({ image = '/mockup.png', title = '', badge = 'Latest', href = '#', large = false, tall = false }) {
+    const imgClass = large
+      ? 'w-full h-[240px] md:h-[464px] lg:h-[592px] object-cover'
+      : tall
+      ? 'w-full h-57 md:h-55 lg:h-71 object-cover'
+      : 'w-full h-44 object-cover';
+
+    const overlayPt = large ? 'pt-36' : tall ? 'pt-28' : 'pt-24';
+
+    return (
+      <article className="relative rounded-2xl overflow-hidden shadow-lg bg-gray-50">
+        <img src={image} alt={title} className={imgClass} />
+        <div className="absolute left-4 top-4">
+          <span className="inline-block bg-gray-200 text-black-800 text-xs px-2.5 py-1 rounded-xl">{badge}</span>
+        </div>
+        <div className={`absolute inset-x-0 bottom-0 px-4 pb-4 ${overlayPt} bg-gradient-to-t from-black/60 to-transparent`}>
+          <h3 className="text-white font-semibold text-lg">{title}</h3>
+        </div>
+        <a href={href} className="sr-only">Read article: {title}</a>
+      </article>
+    );
+  }
+
   return (
     <div className="bg-base-100">
       <style>{`
@@ -433,7 +549,7 @@ function HomePage() {
   >
         {/* overlay that fades in to become the solid navbar on scroll */}
         <div aria-hidden className={`absolute inset-0 bg-white pointer-events-none transition-opacity duration-300 ${navSolid ? 'opacity-100' : 'opacity-0'}`} />
-        <div className="max-w-7xl mx-auto p-4 flex items-center justify-between relative">
+        <div className="max-w-7xl mx-auto p-5 flex items-center justify-between relative">
           <Link to={'/'} className="flex items-center gap-3">
             <img src={navSolid ? '/Logo.png' : '/Logoo.png'} alt="HireLoop" className={'h-11 w-auto transition-opacity duration-300'} />
 
@@ -445,7 +561,7 @@ function HomePage() {
                 aria-expanded={productsOpen}
                 className={`px-4 py-2 text-sm font-semibold transition-colors duration-300 ${navSolid ? 'text-black' : 'text-white'}`}
               >
-                Products ▾
+                Services ▾
               </button>
               <div className={`absolute right-0 top-full mt-1 w-80 bg-base-100 rounded-lg shadow-lg p-4 z-50 transition-opacity duration-150 ${productsOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}>
                 <div className="grid grid-cols-1 gap-6">
@@ -486,7 +602,7 @@ function HomePage() {
             </div>
             <Link to="/problems" className={`px-4 py-2 text-sm font-semibold transition-colors duration-300 ${navSolid ? 'text-black' : 'text-white'}`}>Plans</Link>
             <SignInButton mode="modal">
-              <button className={`px-4 py-2 text-sm font-semibold rounded-3xl transition-all duration-300 ${navSolid ? 'bg-black text-white shadow-sm' : 'nav-cta-hsla text-white'}`}>
+              <button className={`px-4 py-2 text-sm font-semibold rounded-3xl transition-all duration-300 ${navSolid ? 'bg-blue-600 text-white shadow-sm' : 'nav-cta-hsla text-white'}`}>
                 Get Started
               </button>
             </SignInButton>
@@ -495,16 +611,16 @@ function HomePage() {
       </nav>
 
   {/* HERO */}
-  <section className="w-full" style={{ background: 'linear-gradient(to right, rgb(0, 59, 102), rgb(6, 46, 96))' }}>
+  <section className="w-full overflow-visible pb-10 lg:pb-25 xl:pb-40" style={{ background: 'linear-gradient(to right, rgb(0, 59, 102), rgb(6, 46, 96))' }}>
   <header className="max-w-7xl mx-auto px-4 py-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="text-4xl lg:text-5xl font-extrabold leading-tight mb-6 hero-subtitle text-white">Redefining the Future of <span className="text-white">Recruitment</span></h1>
             <p className="text-lg mb-8 max-w-2xl text-white">Simplify your entire hiring journey from sourcing to onboarding with one intelligent platform.</p>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex gap-4">
               <SignInButton mode="modal">
-                <button className="px-5 py-4 bg-orange-600 hover:bg-orange-700 rounded-4xl text-white font-bold flex items-center gap-2">
+                <button className="px-5 py-2 bg-orange-600 hover:bg-orange-700 rounded-3xl text-white font-bold flex items-center gap-2">
                   Get HireLoop
                 </button>
               </SignInButton>
@@ -518,8 +634,14 @@ function HomePage() {
             {/* Key features removed per user request */}
           </div>
 
-          <div className="lg:order-last">
-            <img src="/Hero2.png" alt="platform" className="m-0 lg:m-3 rounded-3xl w-full" />
+          <div className="lg:order-last flex justify-end items-center overflow-visible">
+            <div className="relative w-full lg:w-[900px] xl:w-[1000px] overflow-visible">
+              <img
+                src="/Hero.png"
+                alt="platform"
+                  className="m-0 lg:m-3 w-full object-cover transform lg:translate-x-28 xl:translate-x-44 lg:translate-y-20 xl:translate-y-24 lg:scale-140 lg:w-[120%]"
+              />
+            </div>
           </div>
         </div>
   </header>
@@ -629,14 +751,209 @@ function HomePage() {
       
       <section className="max-w-7xl mx-auto px-4 py-4">
         <h2 className="text-2xl lg:text-3xl font-bold mb-8">What customers say</h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          <TestimonialCard quote={"HireLoop helped us scale our campus hiring. The assessments are top-notch and the support was excellent."} name={"Arpita P."} role={"VP HR"} delay={80} />
-          <TestimonialCard quote={"Great platform for remote interviews and proctoring. Reliable and easy to use."} name={"Freya T."} role={"SVP of Assessment"} delay={220} />
-          <TestimonialCard quote={"Customisable assessments saved us time and improved hire quality."} name={"Director"} role={"E-commerce firm"} delay={360} />
+        {/* Testimonials carousel: no scrollbar, animation-only */}
+        <div className="relative">
+          <style>{`
+            /* Testimonials carousel styles - clearer, no blue highlight, no blur */
+            .testimonials-viewport { overflow: hidden; }
+            .testimonials-track { display: flex; gap: 24px; align-items: stretch; justify-content: center; }
+            .testimonial-item { flex: 0 0 360px; transition: transform 420ms cubic-bezier(.22,.9,.32,1), opacity 320ms ease; will-change: transform, opacity; }
+            /* Side cards are clearly visible — slightly reduced scale and opacity but no blur */
+            .testimonial-item.side { transform: scale(.98) translateY(0); opacity: 0.92; }
+            /* Center card has a gentle emphasis */
+            .testimonial-item.center { transform: scale(1.02); opacity: 1; }
+            .testimonials-dots { display:flex; gap:8px; justify-content:center; margin-top:18px }
+            .testimonials-dot { width:10px; height:10px; border-radius:9999px; background:#e6e6e6; cursor:pointer; border: 1px solid rgba(0,0,0,0.06); transition:transform 220ms ease, background 220ms ease; }
+            /* Active dot: neutral dark (not blue) */
+            .testimonials-dot.active { background:#374151; transform:scale(1.15); }
+            .testimonials-controls { display:flex; gap:12px; justify-content:center; margin-top:12px }
+            .testimonials-control-btn { background: rgba(255,255,255,0.9); border: 1px solid rgba(15,23,42,0.06); width:40px; height:40px; border-radius:9999px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer }
+          `}</style>
+
+          <div className="testimonials-viewport">
+            <div className="testimonials-track" role="list" aria-label="Customer testimonials">
+              {(() => {
+                // Inline carousel in HomePage to avoid runtime reference issues
+                const items = TESTIMONIALS;
+                const count = items.length;
+                // local carousel state inside HomePage
+                const [activeLocal, setActiveLocal] = useState(0);
+                const [pausedLocal, setPausedLocal] = useState(false);
+                const timeoutRefLocal = useRef(null);
+                // swipe support refs
+                const startXRef = useRef(null);
+                const isPointerDownRef = useRef(false);
+
+                useEffect(() => {
+                  if (timeoutRefLocal.current) {
+                    clearTimeout(timeoutRefLocal.current);
+                    timeoutRefLocal.current = null;
+                  }
+                  if (!pausedLocal && count > 1) {
+                    timeoutRefLocal.current = setTimeout(() => {
+                      setActiveLocal((s) => (s + 1) % count);
+                    }, 3800);
+                  }
+                  return () => {
+                    if (timeoutRefLocal.current) {
+                      clearTimeout(timeoutRefLocal.current);
+                      timeoutRefLocal.current = null;
+                    }
+                  };
+                }, [count, pausedLocal, activeLocal]);
+
+                const goPrevLocal = () => setActiveLocal((s) => (s - 1 + count) % count);
+                const goNextLocal = () => setActiveLocal((s) => (s + 1) % count);
+                const prevIdxLocal = (activeLocal - 1 + count) % count;
+                const nextIdxLocal = (activeLocal + 1) % count;
+
+                return (
+                    <div style={{ width: '100%' }}>
+                    <div
+                      onMouseEnter={() => setPausedLocal(true)}
+                      onMouseLeave={() => setPausedLocal(false)}
+                      onPointerDown={(e) => {
+                        startXRef.current = e.clientX;
+                        isPointerDownRef.current = true;
+                        try { e.currentTarget.setPointerCapture && e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
+                        setPausedLocal(true);
+                      }}
+                      onPointerMove={(e) => {
+                        if (!isPointerDownRef.current) return;
+                        e.preventDefault();
+                      }}
+                      onPointerUp={(e) => {
+                        if (!isPointerDownRef.current) return;
+                        const delta = e.clientX - (startXRef.current || 0);
+                        const threshold = 48;
+                        if (delta > threshold) goPrevLocal();
+                        else if (delta < -threshold) goNextLocal();
+                        isPointerDownRef.current = false;
+                        startXRef.current = null;
+                        try { e.currentTarget.releasePointerCapture && e.currentTarget.releasePointerCapture(e.pointerId); } catch (err) {}
+                        setPausedLocal(false);
+                      }}
+                      onPointerCancel={() => {
+                        isPointerDownRef.current = false;
+                        startXRef.current = null;
+                        setPausedLocal(false);
+                      }}
+                    >
+                      <div style={{ display: 'flex', gap: 24, justifyContent: 'center', alignItems: 'stretch' }}>
+                        {items.map((it, idx) => {
+                          const cls = idx === activeLocal ? 'testimonial-item center' : idx === prevIdxLocal || idx === nextIdxLocal ? 'testimonial-item side' : 'testimonial-item side';
+                          return (
+                            <div key={idx} className={cls} role="listitem" aria-hidden={idx !== activeLocal}>
+                              <TestimonialCard
+                                quote={it.quote}
+                                name={it.name}
+                                role={it.role}
+                                delay={0}
+                                forceActive={idx === activeLocal}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="testimonials-controls">
+                      <button type="button" aria-label="Previous testimonial" className="testimonials-control-btn" onClick={goPrevLocal}>
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <div className="testimonials-dots" aria-hidden>
+                        {items.map((_, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            aria-label={`Show testimonial ${i + 1}`}
+                            className={`testimonials-dot ${i === activeLocal ? 'active' : ''}`}
+                            onClick={() => setActiveLocal(i)}
+                          />
+                        ))}
+                      </div>
+                      <button type="button" aria-label="Next testimonial" className="testimonials-control-btn" onClick={goNextLocal}>
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
         </div>
       </section>
 
       <Integrations />
+
+      {/* BLOGS: Recent posts section inserted above the FAQ (redesigned mosaic layout) */}
+      <section className="max-w-7xl mx-auto px-4 py-18">
+        <div className="text-center mb-8">
+          <span className="inline-block bg-blue-600 text-white px-3 py-1 rounded-full text-bold mb-3">Our Blogs</span>
+          <h2 className="text-4xl font-extrabold mb-3">Get Smarter with Our <span className="text-orange-500">Recent </span>Posts</h2>
+          <p className="text-sm text-gray-600 max-w-3xl mx-auto">Our recent posts are crafted to be more than just content—they are a resource designed to empower you with actionable knowledge and fresh perspectives.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+          {/* left column: two stacked smaller cards */}
+          <div className="flex flex-col gap-6">
+            <BlogCard
+              image="/Blogs/1.jpeg"
+              title="The Synergy Equation: Unlocking Your Team's Collective Power"
+              excerpt="How collaboration patterns unlock exponential team performance and measurable outcomes."
+              author="Arpita P."
+              date="Nov 5, 2025"
+              tall
+            />
+
+            <BlogCard
+              image="/Blogs/2.jpeg"
+              title="5 Actionable Strategies to Prevent Team Burnout"
+              excerpt="Practical daily routines and policy changes to keep teams healthy and productive."
+              author="Freya T."
+              date="Oct 28, 2025"
+              tall
+            />
+          </div>
+
+          {/* center: large featured card */}
+          <div className="row-start-1 md:row-span-2">
+            <BlogCard
+              large
+              image="/Blogs/3.jpeg"
+              title="The Art of Alignment: How Great Teams Achieve Goals"
+              excerpt="Alignment is more than OKRs — it's systems, rituals and shared language. Learn the playbook used by high-performing product teams."
+              author="Sanjay R."
+              date="Nov 10, 2025"
+            />
+          </div>
+
+          {/* right column: two stacked smaller cards */}
+          <div className="flex flex-col gap-6">
+            <BlogCard
+              image="/Blogs/5.jpeg"
+              title="Power of Productive Meetings: Turning Conversations into Meaningful Action"
+              excerpt="Case studies and practical templates to run alignment workshops."
+              author="Leena M."
+              date="Nov 2, 2025"
+              tall
+            />
+
+            <BlogCard
+              image="/Blogs/4.jpeg"
+              title="Building Bridges: Enhancing Cross-Functional Teamwork"
+              excerpt="Techniques to reduce friction and speed up delivery across teams."
+              author="Director"
+              date="Oct 20, 2025"
+              tall
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-center mt-3">
+          <Link to="/blogs" className="px-6 py-3 bg-orange-500 hover:bg-orange-400 text-white rounded-full shadow">Read More Articles</Link>
+        </div>
+      </section>
 
         {/* FAQ section inserted above footer */}
         <FAQ />
@@ -680,12 +997,11 @@ function HomePage() {
                   <SignInButton mode="modal">
                     <button className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-full font-semibold">Get HireLoop</button>
                   </SignInButton>
-                  {/* <button className="px-6 py-3 bg-white text-gray-800 rounded-full font-medium">Invite a Friend</button> */}
                 </div>
               </div>
 
               {/* floating decorative bubbles (absolute) - moved after CTA to ensure they render on top */}
-              <div aria-hidden style={{ position: 'absolute', inset: 0, zIndex: 60, pointerEvents: 'none' }}>
+              <div aria-hidden style={{ position: 'absolute', inset: 10, zIndex: 80, pointerEvents: 'none' }}>
                 <div style={{ position: 'absolute', left: -40, top: 20, width: 110, height: 110, borderRadius: 9999, background: 'radial-gradient(circle at 30% 25%, rgba(255,255,255,0.08), rgba(0,0,0,0.25))', boxShadow: '0 18px 40px rgba(2,6,23,0.6)' }} />
                 <div style={{ position: 'absolute', right: -40, top: -10, width: 140, height: 140, borderRadius: 9999, background: 'radial-gradient(circle at 35% 30%, rgba(255,255,255,0.05), rgba(0,0,0,0.4))', boxShadow: '0 30px 60px rgba(2,6,23,0.6)' }} />
                 <div style={{ position: 'absolute', left: 80, bottom: -40, width: 160, height: 160, borderRadius: 9999, background: 'radial-gradient(circle at 35% 30%, rgba(40,170,255,0.95), rgba(10,50,80,0.6))', boxShadow: '0 30px 60px rgba(2,6,23,0.6)' }} />

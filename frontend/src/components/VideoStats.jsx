@@ -78,7 +78,7 @@ export default function VideoStats({ image = '/mockup.png' }) {
       </div>
 
       <div className="mt-4 flex items-center justify-center gap-4">
-        <button className="px-6 py-3 bg-orange-600 text-white rounded-full shadow">Try HireLoop Today</button>
+        <button className="px-6 py-3 bg-blue-600 text-white rounded-full shadow">Try HireLoop Today</button>
         <button className="px-6 py-3 border rounded-full">More info</button>
       </div>
     </section>

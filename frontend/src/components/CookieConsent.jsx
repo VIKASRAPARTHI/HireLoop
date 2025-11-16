@@ -52,7 +52,7 @@ export default function CookieConsent() {
         style={{ backgroundColor: '#ffffff', color: '#111827' }}
       >
         <div className="flex items-start gap-4">
-          <Cookie className="w-8 h-8 text-indigo-600 flex-shrink-0" />
+          <Cookie className="w-8 h-8 text-orange-600 flex-shrink-0" />
           <div className="flex-1">
             <h3 className="text-gray-900 mb-2">We use cookies</h3>
             <p className="text-gray-600 text-sm mb-4">
@@ -63,7 +63,7 @@ export default function CookieConsent() {
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={handleAccept}
-                className="px-4 py-2 text-sm rounded-md bg-indigo-600 hover:bg-indigo-700 text-white"
+                className="px-4 py-2 text-sm rounded-md bg-orange-600 hover:bg-orange-700 text-white"
               >
                 Accept All
               </button>
