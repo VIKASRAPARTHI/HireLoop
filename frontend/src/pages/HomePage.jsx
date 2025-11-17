@@ -12,6 +12,7 @@ import {
   StarIcon,
   ChevronLeft,
   ChevronRight,
+  Search,
   Code,
   FileText,
   BarChart2,
@@ -176,6 +177,14 @@ const TESTIMONIALS = [
 
 function HomePage() {
   const [productsOpen, setProductsOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  // Search state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchActiveIndex, setSearchActiveIndex] = useState(-1);
+  const searchTimeoutRef = useRef(null);
   const swiperRef = useRef(null);
   const [navSolid, setNavSolid] = useState(false);
 
@@ -555,6 +564,53 @@ function HomePage() {
 
           </Link>
           <div className="flex items-center gap-3">
+            {/* Search (typeahead) */}
+            <div className="relative" onMouseEnter={() => setSearchOpen(true)} onMouseLeave={() => setSearchOpen(false)}>
+              <button aria-label="Open search" onClick={() => { setSearchOpen((s) => !s); setTimeout(() => { const el = document.getElementById('nav-search-input'); if (el) el.focus(); }, 10); }} onFocus={() => setSearchOpen(true)} className={`px-3 py-2 rounded-md transition-colors flex items-center justify-center hover:text-primary ${navSolid ? 'text-black' : 'text-white'}`}>
+                <Search className="w-4 h-4" />
+              </button>
+              {searchOpen && (
+                <div className="absolute left-0 mt-2 w-80 bg-white rounded-md shadow-lg p-2 z-50 origin-top-left">
+                  <label htmlFor="nav-search-input" className="sr-only">Search</label>
+                  <input
+                    id="nav-search-input"
+                    role="searchbox"
+                    aria-label="Search site"
+                    value={searchQuery}
+                    onFocus={() => setSearchOpen(true)}
+                    onBlur={() => setTimeout(() => setSearchOpen(false), 150)}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        setSearchActiveIndex((i) => Math.min(i + 1, searchResults.length - 1));
+                      } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        setSearchActiveIndex((i) => Math.max(i - 1, 0));
+                      } else if (e.key === 'Enter') {
+                        if (searchResults[searchActiveIndex]) {
+                          window.location.href = searchResults[searchActiveIndex].href;
+                        }
+                      } else if (e.key === 'Escape') {
+                        setSearchOpen(false);
+                      }
+                    }}
+                    placeholder="Search docs, blogs, features..."
+                    className="w-full px-3 py-2 border rounded-md"
+                  />
+                  <ul className="mt-2 max-h-48 overflow-auto">
+                    {searchResults.length ? searchResults.map((r, idx) => (
+                      <li key={idx} className={`p-2 cursor-pointer ${idx === searchActiveIndex ? 'bg-gray-100' : ''}`} onMouseEnter={() => setSearchActiveIndex(idx)} onClick={() => (window.location.href = r.href)}>
+                        <div className="font-medium">{r.title}</div>
+                        <div className="text-xs text-gray-500">{r.type}</div>
+                      </li>
+                    )) : (
+                      <li className="p-2 text-sm text-gray-500">No results</li>
+                    )}
+                  </ul>
+                </div>
+              )}
+            </div>
             <div className="relative" onMouseEnter={() => setProductsOpen(true)} onMouseLeave={() => setProductsOpen(false)} onFocus={() => setProductsOpen(true)} onBlur={() => setProductsOpen(false)}>
               <button
                 aria-haspopup="true"
@@ -563,13 +619,14 @@ function HomePage() {
               >
                 Services ▾
               </button>
-              <div className={`absolute right-0 top-full mt-1 w-80 bg-base-100 rounded-lg shadow-lg p-4 z-50 transition-opacity duration-150 ${productsOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}>
-                <div className="grid grid-cols-1 gap-6">
+              <div className={`absolute left-0 top-full mt-1 w-80 bg-base-100 rounded-lg shadow-lg p-3 z-50 transition-opacity duration-150 origin-top-left ${productsOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}>
+                <div className="grid grid-cols-1 gap-3">
                   <div className="p-2 rounded-md">
                     <div className="font-semibold mb-2 flex items-center gap-2"><Code className="w-4 h-4 text-primary"/>Assessments</div>
                     <ul className="space-y-1 text-sm">
                       <li><Link to="/products/assessments/coding" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Coding & Skill Tests</Link></li>
                       <li><Link to="/products/assessments/proctoring" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Proctoring & Anti-Cheat</Link></li>
+                      <li><Link to="/products/assessments/behavioral" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Behavioral Assessments</Link></li>
                     </ul>
                   </div>
 
@@ -583,23 +640,41 @@ function HomePage() {
                   </div>
 
                   <div className="p-2 rounded-md">
-                    <div className="font-semibold mb-2 flex items-center gap-2"><FileText className="w-4 h-4 text-primary"/>Onboarding</div>
-                    <ul className="space-y-1 text-sm">
-                      <li><Link to="/products/onboarding/docs" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Paperless Documentation</Link></li>
-                      <li><Link to="/products/onboarding/welcome" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Welcome Journeys</Link></li>
-                    </ul>
-                  </div>
-
-                  <div className="p-2 rounded-md">
                     <div className="font-semibold mb-2 flex items-center gap-2"><BarChart2 className="w-4 h-4 text-primary"/>Analytics</div>
                     <ul className="space-y-1 text-sm">
                       <li><Link to="/products/analytics/insights" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Insights & Reports</Link></li>
-                      <li><Link to="/products/analytics/team" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Team Collaboration</Link></li>
+                      <li><Link to="/products/onboarding/docs" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Paperless Documentation</Link></li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
+            {/* Resources mega menu */}
+            <div className="relative" onMouseEnter={() => setResourcesOpen(true)} onMouseLeave={() => setResourcesOpen(false)} onFocus={() => setResourcesOpen(true)} onBlur={() => setResourcesOpen(false)}>
+              <button aria-haspopup="true" aria-expanded={resourcesOpen} className={`px-4 py-2 text-sm font-semibold transition-colors duration-300 ${navSolid ? 'text-black' : 'text-white'}`}>Resources ▾</button>
+              <div className={`absolute left-0 top-full mt-1 w-80 bg-base-100 rounded-lg shadow-lg p-3 z-50 transition-opacity duration-150 origin-top-left ${resourcesOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}>
+                <ul className="space-y-1 text-sm">
+                  <li><Link to="/docs" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Documentation</Link></li>
+                  <li><Link to="/blogs" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Blog</Link></li>
+                  <li><Link to="/case-studies" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Case Studies</Link></li>
+                  <li><Link to="/tutorials" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Tutorials</Link></li>
+                  <li><Link to="/webinars" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">Webinars</Link></li>
+                  <li><Link to="/resources" className="block px-2 py-1 rounded-md hover:bg-base-200 transition">All resources</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* About dropdown */}
+            <div className="relative" onMouseEnter={() => setAboutOpen(true)} onMouseLeave={() => setAboutOpen(false)} onFocus={() => setAboutOpen(true)} onBlur={() => setAboutOpen(false)}>
+              <button aria-haspopup="true" aria-expanded={aboutOpen} className={`px-4 py-2 text-sm font-semibold transition-colors duration-300 ${navSolid ? 'text-black' : 'text-white'}`}>About Us ▾</button>
+              <div className={`absolute left-0 top-full mt-1 w-48 bg-base-100 rounded-lg shadow-lg p-3 z-50 transition-opacity duration-150 origin-top-left ${aboutOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}>
+                <ul className="space-y-2 text-sm">
+                  <li><Link to="/about" className="block">About</Link></li>
+                  <li><Link to="/careers" className="block">Careers</Link></li>
+                </ul>
+              </div>
+            </div>
+
             <Link to="/problems" className={`px-4 py-2 text-sm font-semibold transition-colors duration-300 ${navSolid ? 'text-black' : 'text-white'}`}>Plans</Link>
             <SignInButton mode="modal">
               <button className={`px-4 py-2 text-sm font-semibold rounded-3xl transition-all duration-300 ${navSolid ? 'bg-blue-600 text-white shadow-sm' : 'nav-cta-hsla text-white'}`}>
@@ -611,10 +686,10 @@ function HomePage() {
       </nav>
 
   {/* HERO */}
-  <section className="w-full overflow-visible pb-10 lg:pb-25 xl:pb-40" style={{ background: 'linear-gradient(to right, rgb(0, 59, 102), rgb(6, 46, 96))' }}>
+  <section className="w-full overflow-visible pb-10 lg:pb-25 xl:pb-36" style={{ background: 'linear-gradient(to right, rgb(0, 59, 102), rgb(6, 46, 96))' }}>
   <header className="max-w-7xl mx-auto px-4 py-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
+          <div className="pt-12 lg:pt-50">
             <h1 className="text-4xl lg:text-5xl font-extrabold leading-tight mb-6 hero-subtitle text-white">Redefining the Future of <span className="text-white">Recruitment</span></h1>
             <p className="text-lg mb-8 max-w-2xl text-white">Simplify your entire hiring journey from sourcing to onboarding with one intelligent platform.</p>
 

@@ -10,6 +10,14 @@ import ActiveSessions from "../components/ActiveSessions";
 import RecentSessions from "../components/RecentSessions";
 import CreateSessionModal from "../components/CreateSessionModal";
 
+// Dashboard widgets (new)
+import { UpcomingInterview } from "../components/dashboard/UpcomingInterview";
+import { CurrentVacancies } from "../components/dashboard/CurrentVacancies";
+import { IndustriesInsight } from "../components/dashboard/IndustriesInsight";
+import { PotentialCandidates } from "../components/dashboard/PotentialCandidates";
+import { CountriesInsight } from "../components/dashboard/CountriesInsight";
+import Sidebar from "../components/dashboard/Sidebar";
+
 function DashboardPage() {
   const navigate = useNavigate();
   const { user } = useUser();
@@ -50,17 +58,46 @@ function DashboardPage() {
   return (
     <>
       <div className="min-h-screen bg-gradient-to-br from-base-100 via-base-200 to-base-300">
-        <Navbar />
-        <WelcomeSection onCreateSession={() => setShowCreateModal(true)} />
+        <div className="flex">
+          <Sidebar />
+          <div className="flex-1">
+            <Navbar />
+            <WelcomeSection onCreateSession={() => setShowCreateModal(true)} />
 
-        {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-8">
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-8">
           {/* Stats Section - Top Row */}
           <div className="mb-8">
             <StatsCards
               activeSessionsCount={activeSessions.length}
               recentSessionsCount={recentSessions.length}
             />
+          </div>
+
+          {/* New Dashboard Widgets (merged) */}
+          <div className="space-y-6 mb-8">
+            {/* Upcoming Interview - Full Width */}
+            <UpcomingInterview />
+
+            {/* Two Column Layout: Vacancies + Industries */}
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <CurrentVacancies />
+              </div>
+              <div>
+                <IndustriesInsight />
+              </div>
+            </div>
+
+            {/* Two Column Layout: Candidates + Countries */}
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <PotentialCandidates />
+              </div>
+              <div>
+                <CountriesInsight />
+              </div>
+            </div>
           </div>
 
           {/* Active Sessions - Full Width */}
@@ -75,6 +112,8 @@ function DashboardPage() {
           {/* Recent Sessions Section - Full Width */}
           <div className="mt-6">
             <RecentSessions sessions={recentSessions} isLoading={loadingRecentSessions} />
+          </div>
+            </div>
           </div>
         </div>
       </div>
